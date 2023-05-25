@@ -9,6 +9,7 @@ public class Main {
     ServiceLoader<ProductService> serviceLoader = ServiceLoader.load(ProductService.class);
 
     serviceLoader.stream()
+        .filter(provider -> provider.type().toString().contains("Reverse"))
         .map(ServiceLoader.Provider::get)
         .map(ProductService::getAllProducts)
         .forEach(products -> products.forEach(System.out::println));
