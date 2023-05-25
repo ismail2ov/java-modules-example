@@ -5,11 +5,13 @@ import java.util.ServiceLoader;
 
 public class Main {
 
-  public static void main(String[] args) throws ClassNotFoundException {
+  public static void main(String[] args) {
     ServiceLoader<ProductService> serviceLoader = ServiceLoader.load(ProductService.class);
 
-    ProductService productService = serviceLoader.findFirst().orElseThrow(ClassNotFoundException::new);
-    productService.getAllProducts().forEach(System.out::println);
+    serviceLoader.stream()
+        .map(ServiceLoader.Provider::get)
+        .map(ProductService::getAllProducts)
+        .forEach(products -> products.forEach(System.out::println));
   }
 
 }
